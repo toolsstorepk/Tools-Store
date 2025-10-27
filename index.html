@@ -237,6 +237,101 @@
             background: var(--dark-red);
         }
 
+        /* Recently Used Section */
+        .recent-tools {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .recent-tools-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+
+        .recent-tool-card {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .recent-tool-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .recent-tool-icon {
+            font-size: 1.8rem;
+            color: var(--primary-red);
+            margin-bottom: 0.5rem;
+        }
+
+        .recent-tool-card h4 {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+        }
+
+        /* Contact Section */
+        .contact-section {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .contact-form {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--medium-gray);
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        .submit-button {
+            background: var(--primary-red);
+            color: var(--white);
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .submit-button:hover {
+            background: var(--dark-red);
+        }
+
         /* Footer */
         footer {
             background: var(--text-dark);
@@ -303,6 +398,10 @@
             .footer-container {
                 grid-template-columns: repeat(2, 1fr);
             }
+            
+            .recent-tools-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         @media (max-width: 768px) {
@@ -335,6 +434,10 @@
             .hero p {
                 font-size: 1rem;
             }
+            
+            .recent-tools-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         @media (max-width: 576px) {
@@ -352,6 +455,10 @@
             
             .hero {
                 padding: 3rem 1rem;
+            }
+            
+            .recent-tools-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -375,7 +482,7 @@
             </nav>
             <div class="search-bar">
                 <i class="fas fa-search"></i>
-                <input type="text" placeholder="Search for tools...">
+                <input type="text" id="searchInput" placeholder="Search for tools...">
             </div>
             <div class="mobile-menu">
                 <i class="fas fa-bars"></i>
@@ -388,6 +495,17 @@
         <h2>All Your File Tools in One Place</h2>
         <p>Convert, compress, edit, and calculate - completely free and easy to use!</p>
         <a href="#" class="cta-button">Explore All Tools</a>
+    </section>
+
+    <!-- Recently Used Tools -->
+    <section class="recent-tools">
+        <div class="section-title">
+            <h2>Recently Used Tools</h2>
+            <p>Quick access to your most used utilities</p>
+        </div>
+        <div class="recent-tools-grid" id="recentToolsGrid">
+            <!-- Recent tools will be dynamically added here -->
+        </div>
     </section>
 
     <!-- Tools Section -->
@@ -403,7 +521,7 @@
                 </div>
                 <h3>JPG to PDF</h3>
                 <p>Convert your JPG images to PDF documents with high quality and fast processing.</p>
-                <button class="tool-button" onclick="redirectToTool('JPG to PDF')">Use Tool</button>
+                <button class="tool-button" data-tool="JPG to PDF">Use Tool</button>
             </div>
             <div class="tool-card">
                 <div class="tool-icon">
@@ -411,7 +529,7 @@
                 </div>
                 <h3>WORD to PDF</h3>
                 <p>Transform your Word documents into PDF format while preserving formatting.</p>
-                <button class="tool-button" onclick="redirectToTool('WORD to PDF')">Use Tool</button>
+                <button class="tool-button" data-tool="WORD to PDF">Use Tool</button>
             </div>
             <div class="tool-card">
                 <div class="tool-icon">
@@ -419,7 +537,7 @@
                 </div>
                 <h3>POWERPOINT to PDF</h3>
                 <p>Convert PowerPoint presentations to PDF with all slides intact.</p>
-                <button class="tool-button" onclick="redirectToTool('POWERPOINT to PDF')">Use Tool</button>
+                <button class="tool-button" data-tool="POWERPOINT to PDF">Use Tool</button>
             </div>
             <div class="tool-card">
                 <div class="tool-icon">
@@ -427,7 +545,7 @@
                 </div>
                 <h3>EXCEL to PDF</h3>
                 <p>Transform Excel spreadsheets into PDF documents with proper formatting.</p>
-                <button class="tool-button" onclick="redirectToTool('EXCEL to PDF')">Use Tool</button>
+                <button class="tool-button" data-tool="EXCEL to PDF">Use Tool</button>
             </div>
             <div class="tool-card">
                 <div class="tool-icon">
@@ -435,7 +553,7 @@
                 </div>
                 <h3>HTML to PDF</h3>
                 <p>Convert HTML web pages to PDF documents with accurate rendering.</p>
-                <button class="tool-button" onclick="redirectToTool('HTML to PDF')">Use Tool</button>
+                <button class="tool-button" data-tool="HTML to PDF">Use Tool</button>
             </div>
             <div class="tool-card">
                 <div class="tool-icon">
@@ -443,7 +561,7 @@
                 </div>
                 <h3>PDF to JPG</h3>
                 <p>Extract images from PDF files or convert PDF pages to JPG format.</p>
-                <button class="tool-button" onclick="redirectToTool('PDF to JPG')">Use Tool</button>
+                <button class="tool-button" data-tool="PDF to JPG">Use Tool</button>
             </div>
             <div class="tool-card">
                 <div class="tool-icon">
@@ -451,7 +569,7 @@
                 </div>
                 <h3>PDF to WORD</h3>
                 <p>Convert PDF documents to editable Word format with text recognition.</p>
-                <button class="tool-button" onclick="redirectToTool('PDF to WORD')">Use Tool</button>
+                <button class="tool-button" data-tool="PDF to WORD">Use Tool</button>
             </div>
             <div class="tool-card">
                 <div class="tool-icon">
@@ -459,7 +577,7 @@
                 </div>
                 <h3>PDF to POWERPOINT</h3>
                 <p>Transform PDF files into editable PowerPoint presentations.</p>
-                <button class="tool-button" onclick="redirectToTool('PDF to POWERPOINT')">Use Tool</button>
+                <button class="tool-button" data-tool="PDF to POWERPOINT">Use Tool</button>
             </div>
         </div>
     </section>
@@ -476,7 +594,7 @@
                 </div>
                 <h3>Merge PDF</h3>
                 <p>Combine multiple PDF files into a single document in the order you want.</p>
-                <button class="tool-button" onclick="redirectToTool('Merge PDF')">Use Tool</button>
+                <button class="tool-button" data-tool="Merge PDF">Use Tool</button>
             </div>
             <div class="tool-card">
                 <div class="tool-icon">
@@ -484,7 +602,7 @@
                 </div>
                 <h3>Split PDF</h3>
                 <p>Divide a PDF file into multiple documents or extract specific pages.</p>
-                <button class="tool-button" onclick="redirectToTool('Split PDF')">Use Tool</button>
+                <button class="tool-button" data-tool="Split PDF">Use Tool</button>
             </div>
             <div class="tool-card">
                 <div class="tool-icon">
@@ -492,7 +610,7 @@
                 </div>
                 <h3>Remove Pages</h3>
                 <p>Delete unwanted pages from your PDF documents with ease.</p>
-                <button class="tool-button" onclick="redirectToTool('Remove Pages')">Use Tool</button>
+                <button class="tool-button" data-tool="Remove Pages">Use Tool</button>
             </div>
             <div class="tool-card">
                 <div class="tool-icon">
@@ -500,7 +618,7 @@
                 </div>
                 <h3>Extract Pages</h3>
                 <p>Select and extract specific pages from your PDF files.</p>
-                <button class="tool-button" onclick="redirectToTool('Extract Pages')">Use Tool</button>
+                <button class="tool-button" data-tool="Extract Pages">Use Tool</button>
             </div>
         </div>
     </section>
@@ -517,7 +635,7 @@
                 </div>
                 <h3>Image Converter</h3>
                 <p>Convert between different image formats like JPG, PNG, WEBP, and more formats.</p>
-             <button class="tool-button" onclick=" image-converter.html">Use Tool</button>
+                <button class="tool-button" data-tool="Image Converter">Use Tool</button>
             </div>
             <div class="tool-card">
                 <div class="tool-icon">
@@ -525,7 +643,7 @@
                 </div>
                 <h3>Image Compressor</h3>
                 <p>Reduce image file size without significant quality loss.</p>
-                <button class="tool-button" onclick="redirectToTool('Image Compressor')">Use Tool</button>
+                <button class="tool-button" data-tool="Image Compressor">Use Tool</button>
             </div>
             <div class="tool-card">
                 <div class="tool-icon">
@@ -533,7 +651,7 @@
                 </div>
                 <h3>Image Crop</h3>
                 <p>Crop and resize your images to the perfect dimensions.</p>
-                <button class="tool-button" onclick="redirectToTool('Image Crop')">Use Tool</button>
+                <button class="tool-button" data-tool="Image Crop">Use Tool</button>
             </div>
             <div class="tool-card">
                 <div class="tool-icon">
@@ -541,7 +659,7 @@
                 </div>
                 <h3>Video Converter</h3>
                 <p>Convert video files between different formats like MP4, AVI, MOV, etc.</p>
-                <button class="tool-button" onclick="redirectToTool('Video Converter')">Use Tool</button>
+                <button class="tool-button" data-tool="Video Converter">Use Tool</button>
             </div>
             <div class="tool-card">
                 <div class="tool-icon">
@@ -549,7 +667,7 @@
                 </div>
                 <h3>Age Calculator</h3>
                 <p>Calculate exact age in years, months, and days from birth date.</p>
-                <button class="tool-button" onclick="redirectToTool('Age Calculator')">Use Tool</button>
+                <button class="tool-button" data-tool="Age Calculator">Use Tool</button>
             </div>
             <div class="tool-card">
                 <div class="tool-icon">
@@ -557,7 +675,7 @@
                 </div>
                 <h3>EMI Calculator</h3>
                 <p>Calculate Equated Monthly Installments for loans and mortgages.</p>
-                <button class="tool-button" onclick="redirectToTool('EMI Calculator')">Use Tool</button>
+                <button class="tool-button" data-tool="EMI Calculator">Use Tool</button>
             </div>
             <div class="tool-card">
                 <div class="tool-icon">
@@ -565,7 +683,7 @@
                 </div>
                 <h3>SIP Calculator</h3>
                 <p>Calculate returns on Systematic Investment Plans for mutual funds.</p>
-                <button class="tool-button" onclick="redirectToTool('SIP Calculator')">Use Tool</button>
+                <button class="tool-button" data-tool="SIP Calculator">Use Tool</button>
             </div>
             <div class="tool-card">
                 <div class="tool-icon">
@@ -573,8 +691,33 @@
                 </div>
                 <h3>Audio Trim</h3>
                 <p>Cut and trim audio files to create perfect sound clips.</p>
-                <button class="tool-button" onclick="redirectToTool('Audio Trim')">Use Tool</button>
+                <button class="tool-button" data-tool="Audio Trim">Use Tool</button>
             </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section">
+        <div class="section-title">
+            <h2>Contact Us</h2>
+            <p>Get in touch with our support team</p>
+        </div>
+        <div class="contact-form">
+            <form id="contactForm">
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" required></textarea>
+                </div>
+                <button type="submit" class="submit-button">Send Message</button>
+            </form>
         </div>
     </section>
 
@@ -603,7 +746,7 @@
                 <h3>Support</h3>
                 <ul>
                     <li><a href="#">Help Center</a></li>
-                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="mailto:toolsstorepk@gmail.com">Contact Us</a></li>
                     <li><a href="#">Privacy Policy</a></li>
                     <li><a href="#">Terms of Service</a></li>
                 </ul>
@@ -619,34 +762,161 @@
             </div>
         </div>
         <div class="copyright">
-            <p>&copy; 2023 Tools Store. All rights reserved.</p>
+            <p>&copy; 2023 Tools Store. All rights reserved. | Email: <a href="mailto:toolsstorepk@gmail.com">toolsstorepk@gmail.com</a></p>
         </div>
     </footer>
 
     <script>
-        // JavaScript for tool redirection
+        // Tool data with icons
+        const toolData = {
+            "JPG to PDF": "fas fa-file-image",
+            "WORD to PDF": "fas fa-file-word",
+            "POWERPOINT to PDF": "fas fa-file-powerpoint",
+            "EXCEL to PDF": "fas fa-file-excel",
+            "HTML to PDF": "fas fa-code",
+            "PDF to JPG": "fas fa-file-pdf",
+            "PDF to WORD": "fas fa-file-alt",
+            "PDF to POWERPOINT": "fas fa-file-prescription",
+            "Merge PDF": "fas fa-object-group",
+            "Split PDF": "fas fa-cut",
+            "Remove Pages": "fas fa-minus-circle",
+            "Extract Pages": "fas fa-crop-alt",
+            "Image Converter": "fas fa-exchange-alt",
+            "Image Compressor": "fas fa-compress-arrows-alt",
+            "Image Crop": "fas fa-crop",
+            "Video Converter": "fas fa-film",
+            "Age Calculator": "fas fa-birthday-cake",
+            "EMI Calculator": "fas fa-calculator",
+            "SIP Calculator": "fas fa-chart-line",
+            "Audio Trim": "fas fa-music"
+        };
+
+        // Initialize recent tools from localStorage or empty array
+        let recentTools = JSON.parse(localStorage.getItem('recentTools')) || [];
+
+        // Function to redirect to tool
         function redirectToTool(toolName) {
+            // Add to recent tools
+            if (!recentTools.includes(toolName)) {
+                recentTools.unshift(toolName);
+                // Keep only last 4 tools
+                if (recentTools.length > 4) {
+                    recentTools = recentTools.slice(0, 4);
+                }
+                localStorage.setItem('recentTools', JSON.stringify(recentTools));
+                updateRecentTools();
+            }
+            
+            // Show alert (in real implementation, navigate to tool page)
             alert(`Redirecting to ${toolName}`);
-            // In a real implementation, this would navigate to the tool page
-            // window.location.href = `/tools/${toolName.toLowerCase().replace(/ /g, '-')}`;
+        }
+
+        // Update recent tools display
+        function updateRecentTools() {
+            const recentToolsGrid = document.getElementById('recentToolsGrid');
+            recentToolsGrid.innerHTML = '';
+            
+            if (recentTools.length === 0) {
+                recentToolsGrid.innerHTML = '<p>No recent tools. Start using tools to see them here.</p>';
+                return;
+            }
+            
+            recentTools.forEach(toolName => {
+                const toolCard = document.createElement('div');
+                toolCard.className = 'recent-tool-card';
+                toolCard.innerHTML = `
+                    <div class="recent-tool-icon">
+                        <i class="${toolData[toolName]}"></i>
+                    </div>
+                    <h4>${toolName}</h4>
+                `;
+                toolCard.addEventListener('click', () => redirectToTool(toolName));
+                recentToolsGrid.appendChild(toolCard);
+            });
+        }
+
+        // Search functionality
+        function setupSearch() {
+            const searchInput = document.getElementById('searchInput');
+            
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const toolCards = document.querySelectorAll('.tool-card');
+                
+                toolCards.forEach(card => {
+                    const toolName = card.querySelector('h3').textContent.toLowerCase();
+                    const toolDescription = card.querySelector('p').textContent.toLowerCase();
+                    
+                    if (toolName.includes(searchTerm) || toolDescription.includes(searchTerm)) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        }
+
+        // Contact form submission
+        function setupContactForm() {
+            const contactForm = document.getElementById('contactForm');
+            
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const message = document.getElementById('message').value;
+                
+                // In a real implementation, you would send this data to a server
+                alert(`Thank you, ${name}! Your message has been sent. We'll get back to you at ${email} soon.`);
+                
+                // Reset form
+                contactForm.reset();
+            });
         }
 
         // Mobile menu toggle
-        document.querySelector('.mobile-menu').addEventListener('click', function() {
+        function setupMobileMenu() {
+            const mobileMenu = document.querySelector('.mobile-menu');
             const nav = document.querySelector('nav ul');
-            nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
-        });
-
-        // Search functionality
-        document.querySelector('.search-bar input').addEventListener('keyup', function(e) {
-            if (e.key === 'Enter') {
-                const searchTerm = this.value.trim();
-                if (searchTerm) {
-                    alert(`Searching for: ${searchTerm}`);
-                    // In a real implementation, this would filter tools or navigate to search results
+            
+            mobileMenu.addEventListener('click', function() {
+                if (nav.style.display === 'flex') {
+                    nav.style.display = 'none';
+                } else {
+                    nav.style.display = 'flex';
+                    nav.style.flexDirection = 'column';
+                    nav.style.position = 'absolute';
+                    nav.style.top = '100%';
+                    nav.style.left = '0';
+                    nav.style.right = '0';
+                    nav.style.background = 'var(--white)';
+                    nav.style.padding = '1rem';
+                    nav.style.boxShadow = 'var(--shadow)';
                 }
-            }
-        });
+            });
+        }
+
+        // Initialize the application
+        function initApp() {
+            // Set up tool buttons
+            const toolButtons = document.querySelectorAll('.tool-button');
+            toolButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const toolName = this.getAttribute('data-tool');
+                    redirectToTool(toolName);
+                });
+            });
+            
+            // Initialize components
+            updateRecentTools();
+            setupSearch();
+            setupContactForm();
+            setupMobileMenu();
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initApp);
     </script>
 </body>
 </html>
