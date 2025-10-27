@@ -1,118 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Converter Tool</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Image Converter Tool</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
 
-        body {
-            background: #1E1E2F;
-            color: #EAEAEA;
-            text-align: center;
-            padding: 20px;
-        }
+    body {
+      background: #1e1e2f;
+      color: #eaeaea;
+      text-align: center;
+      padding: 20px;
+    }
 
-        .container {
-            max-width: 600px;
-            margin: auto;
-            background: #2B2D42;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(255, 215, 0, 0.2);
-        }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #2b2d42;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(255, 215, 0, 0.2);
+    }
 
-        input, select, button {
-            margin: 10px 0;
-            padding: 10px;
-            width: 100%;
-            border-radius: 5px;
-            border: none;
-        }
+    input,
+    select,
+    button {
+      margin: 10px 0;
+      padding: 10px;
+      width: 100%;
+      border-radius: 5px;
+      border: none;
+      font-size: 16px;
+    }
 
-        button {
-            background: #FFD700;
-            color: #1E1E2F;
-            cursor: pointer;
-            font-weight: bold;
-        }
+    button {
+      background: #ffd700;
+      color: #1e1e2f;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
 
-        button:hover {
-            background: #E6C200;
-        }
+    button:hover {
+      background: #e6c200;
+    }
 
-        .preview {
-            margin-top: 20px;
-        }
-    </style>
+    .preview {
+      margin-top: 20px;
+    }
+
+    #status {
+      margin-top: 10px;
+      font-style: italic;
+      color: #ffd700;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Image Converter</h2>
-        <input type="file" id="imageInput" accept="image/*">
-        <select id="formatSelect">
-            <option value="png">PNG</option>
-            <option value="jpg">JPG</option>
-            <option value="webp">WEBP</option>
-        </select>
-        <button onclick="convertImage()">Convert Image</button>
-        <p id="status"></p>
-        <div class="preview" id="previewContainer"></div>
-    </div>
+  <div class="container">
+    <h2>🖼️ Image Converter</h2>
+    <input type="file" id="imageInput" accept="image/*" />
+    <select id="formatSelect">
+      <option value="png">Convert to PNG</option>
+      <option value="jpeg">Convert to JPG</option>
+      <option value="webp">Convert to WEBP</option>
+      <option value="bmp">Convert to BMP</option>
+    </select>
+    <button id="convertBtn">Convert Image</button>
+    <p id="status"></p>
+    <div class="preview" id="previewContainer"></div>
+  </div>
 
-    <script>
-        function convertImage() {
-            const fileInput = document.getElementById('imageInput');
-            const format = document.getElementById('formatSelect').value;
-            const status = document.getElementById('status');
-            const previewContainer = document.getElementById('previewContainer');
+  <script>
+    document.getElementById("convertBtn").addEventListener("click", convertImage);
 
-            if (!fileInput.files.length) {
-                alert('Please upload an image first.');
-                return;
-            }
+    function convertImage() {
+      const fileInput = document.getElementById("imageInput");
+      const format = document.getElementById("formatSelect").value;
+      const status = document.getElementById("status");
+      const previewContainer = document.getElementById("previewContainer");
 
-            status.textContent = 'Processing image...';
-            const file = fileInput.files[0];
-            const reader = new FileReader();
+      // Reset UI before new conversion
+      previewContainer.innerHTML = "";
+      status.textContent = "";
 
-            reader.onload = function (event) {
-                const img = new Image();
-                img.src = event.target.result;
-                img.onload = function () {
-                    const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
-                    canvas.width = img.width;
-                    canvas.height = img.height;
-                    ctx.drawImage(img, 0, 0);
-                    
-                    const convertedImage = canvas.toDataURL(`image/${format}`);
-                    previewContainer.innerHTML = `<img src="${convertedImage}" style="max-width: 100%; border-radius: 5px; margin-top: 10px;">`;
-                    const downloadBtn = document.createElement('a');
-                    downloadBtn.href = convertedImage;
-                    downloadBtn.download = `converted_image.${format}`;
-                    downloadBtn.textContent = 'Download Image';
-                    downloadBtn.style.display = 'block';
-                    downloadBtn.style.background = '#FFD700';
-                    downloadBtn.style.color = '#1E1E2F';
-                    downloadBtn.style.padding = '10px';
-                    downloadBtn.style.marginTop = '10px';
-                    downloadBtn.style.textDecoration = 'none';
-                    downloadBtn.style.borderRadius = '5px';
-                    previewContainer.appendChild(downloadBtn);
-                    status.textContent = '';
-                };
-            };
-            reader.readAsDataURL(file);
-        }
-    </script>
+      if (!fileInput.files.length) {
+        alert("⚠️ Please upload an image first.");
+        return;
+      }
+
+      const file = fileInput.files[0];
+
+      // Check file type validity
+      if (!file.type.startsWith("image/")) {
+        alert("❌ Invalid file type. Please upload a valid image.");
+        return;
+      }
+
+      // File size check (example: max 10MB)
+      if (file.size > 10 * 1024 * 1024) {
+        alert("⚠️ File is too large (max 10 MB allowed).");
+        return;
+      }
+
+      status.textContent = "Processing image...";
+
+      const reader = new FileReader();
+      reader.onload = function (event) {
+        const img = new Image();
+        img.onload = function () {
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0);
+
+          try {
+            const convertedImage = canvas.toDataURL(`image/${format}`);
+            const previewImg = document.createElement("img");
+            previewImg.src = convertedImage;
+            previewImg.style.maxWidth = "100%";
+            previewImg.style.borderRadius = "5px";
+            previewImg.style.marginTop = "10px";
+
+            const downloadBtn = document.createElement("a");
+            downloadBtn.href = convertedImage;
+            downloadBtn.download = `converted_image.${format}`;
+            downloadBtn.textContent = "⬇️ Download Converted Image";
+            downloadBtn.style.display = "block";
+            downloadBtn.style.background = "#ffd700";
+            downloadBtn.style.color = "#1e1e2f";
+            downloadBtn.style.padding = "10px";
+            downloadBtn.style.marginTop = "10px";
+            downloadBtn.style.textDecoration = "none";
+            downloadBtn.style.borderRadius = "5px";
+            downloadBtn.style.fontWeight = "bold";
+
+            previewContainer.appendChild(previewImg);
+            previewContainer.appendChild(downloadBtn);
+            status.textContent = "✅ Conversion complete!";
+          } catch (error) {
+            status.textContent = "❌ Conversion failed.";
+            console.error(error);
+          }
+        };
+
+        img.onerror = function () {
+          status.textContent = "❌ Failed to load the image.";
+        };
+
+        img.src = event.target.result;
+      };
+
+      reader.onerror = function () {
+        status.textContent = "❌ Error reading the file.";
+      };
+
+      reader.readAsDataURL(file);
+    }
+  </script>
 </body>
 </html>
-
-  
